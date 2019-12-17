@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">FeedActivity</string>
+    <string name="app_name">FeedApp</string>
+    <string name="todo">TODO</string>
+    <string name="online">Мы вновь в сети, можно загружать статьи</string>
+    <string name="offline">Мы вне сети, но можем просмотреть сохраненные статьи</string>
+    <string name="load">Загрузить</string>
+    <string name="rss">RSS:</string>
+    <string name="ok">OK</string>
+    <string name="default_url">"https://rss.stopgame.ru/rss_news.xml"</string>
+    <string name="no_rss">RSS-канал не выбран</string>
 </resources>

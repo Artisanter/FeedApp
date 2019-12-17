@@ -1,4 +1,4 @@
-package com.artisanter.feedactivity;
+package com.artisanter.feedapp;
 
 import org.junit.Test;
 

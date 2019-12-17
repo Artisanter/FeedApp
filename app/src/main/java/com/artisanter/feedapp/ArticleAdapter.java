@@ -1,0 +1,82 @@
+package com.artisanter.feedapp;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.webkit.WebView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+public class ArticleAdapter extends ArrayAdapter<Article> {
+    private LayoutInflater inflater;
+    private int layout;
+    private ArrayList<Article> articles;
+    private Picasso picasso;
+    private int width;
+
+    ArticleAdapter(Context context, int resource, ArrayList<Article> articles, int width) {
+        super(context, resource, articles);
+        this.articles = articles;
+        this.layout = resource;
+        this.width = width;
+        this.inflater = LayoutInflater.from(context);
+        picasso = Picasso.with(context);
+    }
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        View view = convertView == null?
+                inflater.inflate(this.layout, parent, false)
+                :convertView;
+        if(convertView == null){
+            view.setTag(new ViewHolder(view));
+        }
+        final ViewHolder holder = (ViewHolder)view.getTag();
+
+        final Article article = articles.get(position);
+
+        holder.button.setTag(holder.description);
+        holder.title.setText(article.getTitle());
+        holder.date.setText(article.getDate());
+        holder.description.loadData(article.getDescription(), "text/html", null);
+
+        if(!article.getImageURL().isEmpty()){
+            picasso.load(article.getImageURL())
+                    .placeholder(R.drawable.ic_placeholder)
+                    .resize(width, 0)
+                    .into(holder.image);
+            holder.image.setVisibility(View.VISIBLE);
+        }
+        else
+            holder.image.setVisibility(View.GONE);
+
+        return view;
+    }
+
+    private class ViewHolder {
+        ViewHolder(View view) {
+            this.view = view;
+            title = view.findViewById(R.id.title);
+            description = view.findViewById(R.id.description);
+            date = view.findViewById(R.id.date);
+            image = view.findViewById(R.id.image);
+            button = view.findViewById(R.id.web_view_button);
+        }
+        View view;
+        TextView title;
+        WebView description;
+        TextView date;
+        ImageView image;
+        ImageButton button;
+    }
+}
