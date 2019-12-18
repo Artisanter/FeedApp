@@ -29,13 +29,25 @@ public class MainActivity extends NetworkActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         articlesView = findViewById(R.id.list_view);
-        articlesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        articlesView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
                 Article article = (Article) articlesView.getAdapter().getItem(position);
                 intent.putExtra("Title", article.getTitle());
                 intent.putExtra("Description", article.getDescription());
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        articlesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), WebActivity.class);
+                Article article = (Article) articlesView.getAdapter().getItem(position);
+                intent.putExtra("Link", article.getLink());
                 startActivity(intent);
             }
         });

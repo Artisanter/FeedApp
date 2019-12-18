@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".ArticleActivity"/>
+        <activity android:name=".WebActivity"></activity>
+        <activity android:name=".ArticleActivity" />
         <activity android:name=".NetworkActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -2,6 +2,8 @@ package com.artisanter.feedapp;
 
 import android.app.Application;
 
+import com.squareup.picasso.Cache;
+import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;
 
 public class FeedApp extends Application {
@@ -13,7 +15,8 @@ public class FeedApp extends Application {
 
     void setPicasso(){
         Picasso picasso = new Picasso.Builder(this)
-                .memoryCache(new CustomCache(1024 * 1024 * 100))
+                .memoryCache(new LruCache(1024 * 1024 * 100) {
+                })
                 .build();
         if(android.os.Debug.isDebuggerConnected())
             picasso.setIndicatorsEnabled(true);
