@@ -93,6 +93,9 @@ public class ParseTask extends AsyncTask<Void, Void, Object> {
                         } else if (tagName.equalsIgnoreCase("guid")) {
                             article.setGuid(text);
 
+                        } else if (tagName.equalsIgnoreCase("link")) {
+                            article.setLink(text);
+
                         }
                     }
                     else{
