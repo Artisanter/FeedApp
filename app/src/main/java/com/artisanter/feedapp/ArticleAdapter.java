@@ -4,16 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.webkit.WebView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,17 +41,20 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
         final Article article = articles.get(position);
 
-        holder.button.setTag(holder.description);
         holder.title.setText(article.getTitle());
         holder.date.setText(article.getDate());
-        holder.description.loadData(article.getDescription(), "text/html", null);
+        holder.preview.setText(article.getPreview());
 
         if(!article.getImageURL().isEmpty()){
-            picasso.load(article.getImageURL())
-                    .placeholder(R.drawable.ic_placeholder)
-                    .resize(width, 0)
-                    .into(holder.image);
-            holder.image.setVisibility(View.VISIBLE);
+            try {
+                picasso.load(article.getImageURL())
+                        .placeholder(R.drawable.ic_placeholder)
+                        .resize(width, 0)
+                        .into(holder.image);
+                holder.image.setVisibility(View.VISIBLE);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         else
             holder.image.setVisibility(View.GONE);
@@ -67,16 +66,14 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         ViewHolder(View view) {
             this.view = view;
             title = view.findViewById(R.id.title);
-            description = view.findViewById(R.id.description);
+            preview = view.findViewById(R.id.preview);
             date = view.findViewById(R.id.date);
             image = view.findViewById(R.id.image);
-            button = view.findViewById(R.id.web_view_button);
         }
         View view;
         TextView title;
-        WebView description;
+        TextView preview;
         TextView date;
         ImageView image;
-        ImageButton button;
     }
 }

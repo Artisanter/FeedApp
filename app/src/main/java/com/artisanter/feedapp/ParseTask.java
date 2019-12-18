@@ -9,6 +9,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.regex.Pattern;
 
 public class ParseTask extends AsyncTask<Void, Void, Object> {
 
@@ -111,6 +112,16 @@ public class ParseTask extends AsyncTask<Void, Void, Object> {
                     }
 
                     if (tagName.equalsIgnoreCase("item")) {
+                        String preview = article.getDescription()
+                                .replaceAll("&#x3C;", "<")
+                                .replaceAll("&#x3E;", ">")
+                                .replaceAll("<br>", "\n")
+                                .replaceAll("<p>", "\n");
+                        preview = Pattern.compile("<[^<]*>")
+                                .matcher(preview)
+                                .replaceAll("");
+
+                        article.setPreview(preview);
                         feed.getArticles().add(article);
                         inItem = false;
                     }

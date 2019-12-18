@@ -54,7 +54,7 @@ public abstract class NetworkActivity extends AppCompatActivity {
         return isOnline;
     }
 
-    abstract void onGetFeed(Feed feed);
+    void onGetFeed(Feed feed){}
 
     void onError(Exception e){
         Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();

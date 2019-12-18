@@ -1,7 +1,5 @@
 package com.artisanter.feedapp;
 
-import android.graphics.Bitmap;
-
 import java.io.Serializable;
 
 class Article implements Serializable {
@@ -10,8 +8,7 @@ class Article implements Serializable {
     private String imageURL = "";
     private String date = "";
     private String guid = "";
-
-    private Bitmap image;
+    private String preview = "";
 
     public String getTitle() {
         return title;
@@ -53,11 +50,12 @@ class Article implements Serializable {
         this.guid = guid;
     }
 
-    public Bitmap getImage() {
-        return image;
+
+    public String getPreview() {
+        return preview;
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public void setPreview(String preview) {
+        this.preview = preview;
     }
 }
