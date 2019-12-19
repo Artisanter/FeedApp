@@ -1,6 +1,6 @@
 package com.artisanter.feedapp;
 
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener;
 
@@ -9,7 +9,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import java.util.Objects;
 
-public class WebActivity extends AppCompatActivity {
+public class WebActivity extends NetworkActivity {
 
     private String link;
     private SwipeRefreshLayout refreshLayout;
@@ -33,13 +33,19 @@ public class WebActivity extends AppCompatActivity {
             }
         });
 
-        OnRefreshListener listener = new OnRefreshListener() {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
                 webView.loadUrl(link);
             }
-        };
-        refreshLayout.setOnRefreshListener(listener);
-        listener.onRefresh();
+        });
+
+        refreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(true);
+                webView.loadUrl(link);
+            }
+        });
     }
 }

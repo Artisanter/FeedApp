@@ -1,18 +1,21 @@
 package com.artisanter.feedapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 
 import java.util.ArrayList;
 
@@ -23,6 +26,8 @@ public class MainActivity extends NetworkActivity {
     SwipeRefreshLayout refreshLayout;
     Feed feed;
     ChannelHistory history;
+    LinearLayout root;
+    int lastHeight = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +77,6 @@ public class MainActivity extends NetworkActivity {
             public void onClick(View v) {
                 v.setVisibility(View.INVISIBLE);
                 rssEdit.requestFocus();
-
             }
         });
         rssEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -85,6 +89,36 @@ public class MainActivity extends NetworkActivity {
                 return false;
             }
         });
+        rssEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(imm == null)
+                    return;
+                if(hasFocus){
+                    rssEdit.selectAll();
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                }else{
+                    imm.hideSoftInputFromWindow(articlesView.getWindowToken(), 0);
+                }
+            }
+        });
+
+        root = findViewById(R.id.root);
+        root.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        int newHeight = root.getHeight();
+                        if(newHeight == lastHeight)
+                            return;
+                        if(newHeight > lastHeight){
+                            showTitle();
+                        }
+                        lastHeight = newHeight;
+                    }
+                }
+        );
         loadFeed();
     }
 
@@ -133,4 +167,5 @@ public class MainActivity extends NetworkActivity {
             refreshLayout.setRefreshing(true);
         }
     }
+
 }
